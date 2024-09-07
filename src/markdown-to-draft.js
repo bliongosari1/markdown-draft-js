@@ -292,12 +292,12 @@ function markdownToDraft(string, options = {}) {
       if (block) {
         previousBlockEndingLine = item.lines[1];
         // reserve one line after list block
-        if (
-          block.type === 'unordered-list-item' ||
-          block.type === 'ordered-list-item'
-        ) {
-          previousBlockEndingLine += 1;
-        }
+        // if (
+        //   block.type === 'unordered-list-item' ||
+        //   block.type === 'ordered-list-item'
+        // ) {
+        //   previousBlockEndingLine += 1;
+        // }
         blocks.push(block);
       }
     }
