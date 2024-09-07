@@ -469,10 +469,10 @@ function renderBlock(block, index, rawDraftObject, options) {
     if (rawDraftObject.blocks[index].text) {
       if (SingleNewlineAfterBlock.indexOf(type) !== -1
           && SingleNewlineAfterBlock.indexOf(rawDraftObject.blocks[index + 1].type) === -1) {
-        markdownString += '\n\n';
+        markdownString += '\n';
       } else if (!options.preserveNewlines) {
         // 2 newlines if not preserving
-        markdownString += '\n\n';
+        markdownString += '\n';
       } else {
         markdownString += '\n';
       }
@@ -495,7 +495,6 @@ function renderBlock(block, index, rawDraftObject, options) {
  * @return {String} markdown string
 **/
 function draftToMarkdown(rawDraftObject, options) {
-  alert('draftToMarkdown');
   options = options || {};
   var markdownString = '';
   rawDraftObject.blocks.forEach(function (block, index) {
