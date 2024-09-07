@@ -190,7 +190,6 @@ const EntityItems = {
 // Bit of a hack - we normally want a double newline after a block,
 // but for list items we just want one (unless it's the _last_ list item in a group.)
 const SingleNewlineAfterBlock = [
-  'unordered-list-item',
   'ordered-list-item'
 ];
 
@@ -496,6 +495,7 @@ function renderBlock(block, index, rawDraftObject, options) {
  * @return {String} markdown string
 **/
 function draftToMarkdown(rawDraftObject, options) {
+  alert('draftToMarkdown');
   options = options || {};
   var markdownString = '';
   rawDraftObject.blocks.forEach(function (block, index) {
