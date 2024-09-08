@@ -269,11 +269,11 @@ function markdownToDraft(string, options = {}) {
       // If there’s nested block level items deeper than that, we need to make sure we capture this by cloning the topmost block
       // otherwise we’ll accidentally overwrite its text. (eg if there's a blockquote with 3 nested paragraphs with inline text, without this check, only the last paragraph would be reflected)
       if (item.level === 0 || item.type === 'list_item_open') {
-        // block = Object.assign({
-        //   depth: depth
-        // }, BlockTypes[itemType](item));
+        block = Object.assign({
+          depth: depth
+        }, BlockTypes[itemType](item));
         // don't add empty blocks to the block array
-        block = BlockTypes[itemType](item);
+        // block = BlockTypes[itemType](item);
       } else if (item.level > 0 && blocks[blocks.length - 1].text) {
         block = Object.assign({}, blocks[blocks.length - 1]);
       }
@@ -286,6 +286,12 @@ function markdownToDraft(string, options = {}) {
         // an appropriate number of extra paragraphs to re-create those newlines in draftjs.
         // This is probably my least favourite thing in this file, but not sure what could be better.
         var totalEmptyParagraphsToCreate = item.lines[0] - previousBlockEndingLine;
+
+        // don't create empty paragraphs for list items
+        if (item.type === 'list_item_open') {
+          totalEmptyParagraphsToCreate = 0;
+        }
+
         for (var i = 0; i < totalEmptyParagraphsToCreate; i++) {
           blocks.push(DefaultBlockTypes.paragraph_open());
         }
