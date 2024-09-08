@@ -35,14 +35,14 @@ const DefaultBlockTypes = {
 
   ordered_list_item_open: function () {
     return {
-      type: 'ordered-list-item-custom',
+      type: 'ordered-list-item',
       text: ''
     };
   },
 
   unordered_list_item_open: function () {
     return {
-      type: 'unordered-list-item-custom',
+      type: 'unordered-list-item',
       text: ''
     };
   },
@@ -272,8 +272,6 @@ function markdownToDraft(string, options = {}) {
         block = Object.assign({
           depth: depth
         }, BlockTypes[itemType](item));
-        // don't add empty blocks to the block array
-        // block = BlockTypes[itemType](item);
       } else if (item.level > 0 && blocks[blocks.length - 1].text) {
         block = Object.assign({}, blocks[blocks.length - 1]);
       }
@@ -286,12 +284,6 @@ function markdownToDraft(string, options = {}) {
         // an appropriate number of extra paragraphs to re-create those newlines in draftjs.
         // This is probably my least favourite thing in this file, but not sure what could be better.
         var totalEmptyParagraphsToCreate = item.lines[0] - previousBlockEndingLine;
-
-        // don't create empty paragraphs for list items
-        if (item.type === 'list_item_open') {
-          totalEmptyParagraphsToCreate = 0;
-        }
-
         for (var i = 0; i < totalEmptyParagraphsToCreate; i++) {
           blocks.push(DefaultBlockTypes.paragraph_open());
         }
@@ -299,20 +291,15 @@ function markdownToDraft(string, options = {}) {
 
       if (block) {
         previousBlockEndingLine = item.lines[1];
-        // Reserve one line after list block
+        // reserve one line after list block
         if (
           block.type === 'unordered-list-item' ||
           block.type === 'ordered-list-item'
         ) {
           previousBlockEndingLine += 1;
         }
-        // Modify block type to a custom one
-        if (block.type === 'ordered-list-item' || block.type === 'unordered-list-item') {
-          block.type = block.type + '-custom'; // Change block type
-        }
         blocks.push(block);
       }
-      
     }
 
   });
