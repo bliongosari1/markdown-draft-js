@@ -291,18 +291,20 @@ function markdownToDraft(string, options = {}) {
 
       if (block) {
         previousBlockEndingLine = item.lines[1];
-        // reserve one line after list block
+        // Reserve one line after list block
         if (
           block.type === 'unordered-list-item' ||
           block.type === 'ordered-list-item'
         ) {
           previousBlockEndingLine += 1;
         }
+        // Modify block type to a custom one
         if (block.type === 'ordered-list-item' || block.type === 'unordered-list-item') {
-          block = Object.assign(block, block.type + '-custom');
+          block.type = block.type + '-custom'; // Change block type
         }
         blocks.push(block);
       }
+      
     }
 
   });
